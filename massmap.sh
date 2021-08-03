@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 usage() {
-	echo "$0: Usage massmap <options> ip"
+	echo "Usage:\tmassmap <options> ip"
 	echo -e "\n\n<OPTIONS>\n"
 	echo -e "-e\tInterface to scan on"
 }
