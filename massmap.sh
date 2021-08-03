@@ -2,6 +2,8 @@
 
 usage() {
 	echo "$0: Usage massmap <options> ip"
+	echo -e "\n\n<OPTIONS>\n"
+	echo -e "-e\tInterface to scan on"
 }
 
 # check if masscan is installed
@@ -28,6 +30,7 @@ while getopts ":e:" opt; do
 		;;
 		\? )
 		echo "Invalid option: -$OPTARG" 1>&2
+		usage
 		exit 1
 		;;
 	esac
@@ -48,8 +51,7 @@ fi
 
 # running masscan
 echo "running masscan ..."
-masscan -e $interface --ports 1-65535 --rate 1000 $target > masscan
+masscan -e $interface --ports 1-65535 --rate 1000 $target | tee masscan
 wait
 nmap_ports=$(awk '{print $4}' masscan | cut -d'/' -f1 | tr '\n' ',' | sed 's/.$//')
-echo "$nmap_ports"
 nmap -sC -sV -T4 -A -p "${nmap_ports}" "$target" -oN nmap_scan
